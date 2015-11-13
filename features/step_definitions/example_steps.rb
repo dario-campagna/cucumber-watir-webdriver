@@ -1,17 +1,15 @@
 require "watir-webdriver"
 require "rspec"
 
-Given(/^I have entered "([^"]*)" into the query$/) do |term|
-  @browser.goto "google.com"
-  @browser.text_field(:name => "q").set term
+Given(/^I am on the Google home page$/) do
+  @google_home_page = GoogleHomePage.new(@browser)
+  @google_home_page.visit
 end
 
-When(/^I click search/) do
-  @browser.button.click
+When(/^I search for "([^"]*)"/) do |term|
+  @google_result_page = @google_home_page.search_for term
 end
 
 Then(/^I should see some results for "([^"]*)"$/) do |term|
-  @browser.div(:id => "resultStats").wait_until_present
-  @browser.div(:id => "resultStats").exists?.should be true
-  @browser.div(:id => "search").text.include?("#{term}").should be true
+  (@google_result_page.results_for term).should be true
 end
