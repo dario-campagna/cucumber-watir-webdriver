@@ -11,5 +11,5 @@ When(/^I search for "([^"]*)"/) do |term|
 end
 
 Then(/^I should see some results for "([^"]*)"$/) do |term|
-  (@google_result_page.results_for term).should be true
+  expect(@google_result_page.results_for term).to be true
 end
